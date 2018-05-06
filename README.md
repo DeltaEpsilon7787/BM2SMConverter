@@ -6,12 +6,10 @@ SM stands for StepMania and is a format used by Stepmania itself and its derivat
 
 ## Installation
 
-This project is written for Python 3.5+ and has two dependencies: tqdm (for progress bars) and pydub (for audio stuff).
-To install, type the following:
+This project is written for Python 3.5+ and has three dependencies: tqdm (for progress bars), pydub (for audio stuff) and chardet.
+To install, type the following into terminal:
 
-`pip install tqdm`
-
-`pip install pydub`
+`pip install chardet pydub tqdm`
 
 Pydub itself is dependent on either ffmpeg or libav. Refer to [pydub repository](https://github.com/jiaaro/pydub) for installation instructions.
 

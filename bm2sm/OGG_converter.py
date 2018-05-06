@@ -7,7 +7,6 @@ from pydub import AudioSegment
 from bm2sm.data_structures import Sound
 from bm2sm.definitions import DEFAULT_FRAME_RATE, standard_tqdm
 from bm2sm.exceptions import EmptyChart
-from bm2sm.strings import Strings
 from modules.decorators import transform_return
 from modules.fake_types import CastableToInt
 
