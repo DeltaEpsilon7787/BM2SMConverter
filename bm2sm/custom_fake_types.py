@@ -7,7 +7,6 @@ from functools import partial
 from bm2sm.definitions import DEFAULT_FRAME_RATE
 from modules.fake_types import Castable, NonNegativeFraction, NonNegativeInt, PositiveFraction
 from modules.functions import feed_forward
-from .strings import Strings
 
 
 def discretizer(precision):
@@ -50,26 +49,26 @@ sound_discretizer = discretizer(Fraction(1, DEFAULT_FRAME_RATE))
 
 
 class Beat(NonNegativeFraction):
-    cast_fail_message = Strings.INVALID_BEAT
+    cast_fail_message = "Non-existent beat: {it}"
     discretizer = beat_discretizer
 
 
 class BPM(PositiveFraction):
-    cast_fail_message = Strings.INVALID_BPM
+    cast_fail_message = "Invalid BPM: {it}"
     discretizer = bpm_discretizer
 
 
 class ChartPosition(NonNegativeFraction):
-    cast_fail_message = Strings.INVALID_MEASURE
+    cast_fail_message = "Non-positive chart position: {it}"
     discretizer = chart_position_discretizer
 
 
 class Measure(NonNegativeFraction):
-    cast_fail_message = Strings.INVALID_MEASURE
+    cast_fail_message = "Non-positive measure: {it}"
 
 
 class Message(Castable, str):
-    cast_fail_message = Strings.INVALID_MESSAGE
+    cast_fail_message = "Less than 2 character long message: {it}"
     caster = partial(feed_forward, (str, operator.methodcaller('upper')))
     post_check = partial(feed_forward, (len, partial(operator.le, 2)))
 
@@ -81,23 +80,23 @@ class Character(Castable, str):
 
 class Segment(Castable, str):
     """A type used to represent two character strings derived from messages"""
-    cast_fail_message = Strings.INVALID_SEGMENT
+    cast_fail_message = "Empty/Invalid segment: {it}"
     caster = partial(feed_forward, (str, operator.methodcaller('upper')))
     post_check = partial(feed_forward, (len, partial(operator.eq, 2)))
 
 
 class Time(NonNegativeFraction):
-    cast_fail_message = Strings.INVALID_TIME
+    cast_fail_message = "Non-positive time: {it}"
     discretizer = sound_discretizer
 
 
 class TimeSignature(PositiveFraction):
-    cast_fail_message = Strings.INVALID_TIME_SIGNATURE
+    cast_fail_message = "Time signature cannot be negative: {it}"
 
 
 class MsStop(Time):
-    cast_fail_message = Strings.INVALID_MS_STOP
+    cast_fail_message = "Invalid ms stop duration: {it}"
 
 
 class BeatStop(NonNegativeInt):
-    cast_fail_message = Strings.UNSUPPORTED_BEAT_STOP
+    cast_fail_message = "Negative/Zero beat stop is not supported: {it}"
