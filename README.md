@@ -8,13 +8,17 @@ SM stands for StepMania and is a format used by Stepmania itself and its derivat
 
 This project is written for Python 3.5+ and has two dependencies: tqdm (for progress bars) and pydub (for audio stuff).
 To install, type the following:
+
 `pip install tqdm`
+
 `pip install pydub`
 
 Pydub itself is dependent on either ffmpeg or libav. Refer to [pydub repository](https://github.com/jiaaro/pydub) for installation instructions.
 
 After then, just run the script as a regular Python script
+
 `python3 BM2SMConverter.py -h`
+
 This should print out usage message.
 
 ```
@@ -49,4 +53,4 @@ optional arguments:
 
 ## License
 
-This project is licensed under the GPLv3 license, refer to [LICENSE] for details.
+This project is licensed under the GPLv3 license, refer to [LICENSE](https://github.com/DeltaEpsilon7787/BM2SMConverter/blob/master/LICENSE) for details.
