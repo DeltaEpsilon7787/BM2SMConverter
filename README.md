@@ -12,7 +12,9 @@ To install, type the following into terminal:
 `pip install chardet pydub tqdm`
 
 If you are on Windows, colorama is also recommended for tqdm.
+
 `pip install colorama`
+
 Pydub itself is dependent on either ffmpeg or libav. Refer to [pydub repository](https://github.com/jiaaro/pydub) for installation instructions.
 
 After then, just run the script as a regular Python script
