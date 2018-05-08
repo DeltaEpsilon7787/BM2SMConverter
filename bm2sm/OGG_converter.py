@@ -3,6 +3,7 @@ from audioop import add as audio_add
 from typing import List
 
 from pydub import AudioSegment
+from tqdm import tqdm
 
 from bm2sm.data_structures import Sound
 from bm2sm.definitions import DEFAULT_FRAME_RATE, standard_tqdm
@@ -51,8 +52,8 @@ class OGGConverter(object):
         sounds_to_process = self.sounds
         result = silence_datum * song_length_in_frames
 
-        overall_progress = standard_tqdm(desc='Mixing tracks',
-                                         total=len(sounds_to_process))
+        overall_progress = standard_tqdm(desc='Processing track #1', total=len(sounds_to_process))
+        track_counter = 1
         while len(sounds_to_process):
             sounds_processed_this_time = 0
 
@@ -64,18 +65,18 @@ class OGGConverter(object):
 
             last_frame = 0
 
-            progress_sounds_to_process = standard_tqdm(iterable=sounds_to_process, leave=False)
-            for sound in progress_sounds_to_process:
-                start_frame = sound.start_time_frames
-                end_frame = sound.end_time_frames
-                if start_frame >= last_frame:
-                    padding_silence = silence_datum * (start_frame - last_frame)
-                    data_fragments.append(padding_silence)
-                    data_fragments.append(sound.sound.raw_data)
-                    last_frame = end_frame
-                    sounds_processed_this_time += 1
-                else:
-                    unprocessed_sounds.append(sound)
+            with standard_tqdm(iterable=sounds_to_process, leave=False) as progress_sounds_to_process:
+                for sound in progress_sounds_to_process:
+                    start_frame = sound.start_time_frames
+                    end_frame = sound.end_time_frames
+                    if start_frame >= last_frame:
+                        padding_silence = silence_datum * (start_frame - last_frame)
+                        data_fragments.append(padding_silence)
+                        data_fragments.append(sound.sound.raw_data)
+                        last_frame = end_frame
+                        sounds_processed_this_time += 1
+                    else:
+                        unprocessed_sounds.append(sound)
 
             imposed_data = b''.join(data_fragments)
             finishing_silence = silence_datum * (song_length_in_frames -
@@ -84,15 +85,17 @@ class OGGConverter(object):
             imposed_data = b''.join((imposed_data, finishing_silence))
             result = audio_add(result, imposed_data, sample_width)
             sounds_to_process = unprocessed_sounds
+            track_counter += 1
+            overall_progress.set_description('Processing track #{}'.format(track_counter))
             overall_progress.update(sounds_processed_this_time)
 
+        overall_progress.close()
+        tqdm.write('Writing OGG file')
         output = AudioSegment(data=result,
                               channels=channels,
                               frame_rate=DEFAULT_FRAME_RATE,
                               sample_width=sample_width)
 
-        print()
-        print('Writing OGG file', flush=True)
         output.export(self.parent.OGG_file_path,
                       format='ogg')
 
