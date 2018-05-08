@@ -2,6 +2,8 @@ import operator
 from functools import partial
 from typing import Any, Dict, List
 
+from tqdm import tqdm
+
 from bm2sm.data_structures import NotefieldObject
 from bm2sm.definitions import Keys, Representations, standard_tqdm
 from bm2sm.exceptions import EmptyChart, UnknownDifficulty, UnsupportedGameMode
@@ -69,43 +71,43 @@ class SMChartConverter(object):
 
         measure_splits = {}
 
-        progress_objects = standard_tqdm(iterable=self.objects, desc='Composing SM chart manifold')
-        for obj in progress_objects:
-            measure = obj.measure
-            if measure not in measure_splits:
-                measure_splits[measure] = 4
-            cur_split = measure_splits[measure]
-            measure_splits[measure] = lcm(cur_split, obj.position.denominator)
+        with standard_tqdm(iterable=self.objects, desc='Composing SM chart manifold') as progress_objects:
+            for obj in progress_objects:
+                measure = obj.measure
+                if measure not in measure_splits:
+                    measure_splits[measure] = 4
+                cur_split = measure_splits[measure]
+                measure_splits[measure] = lcm(cur_split, obj.position.denominator)
 
         amount_of_measures = max(measure_splits) + 1
         measures = []
 
-        progress_measures = standard_tqdm(range(amount_of_measures), desc='Filling SM chart with 0')
-        for measure_num in progress_measures:
-            length = measure_splits.get(NonNegativeInt(measure_num), 4)
-            measures.append(
-                [
+        with standard_tqdm(range(amount_of_measures), desc='Filling SM chart with 0') as progress_measures:
+            for measure_num in progress_measures:
+                length = measure_splits.get(NonNegativeInt(measure_num), 4)
+                measures.append(
                     [
-                        Representations.NOTHING
-                        for _ in range(len(self.keys))
+                        [
+                            Representations.NOTHING
+                            for _ in range(len(self.keys))
+                        ]
+                        for _ in range(length)
                     ]
-                    for _ in range(length)
-                ]
-            )
+                )
 
-        progress_objects = standard_tqdm(iterable=self.objects, desc='Injecting objects into SM chart')
-        for obj in progress_objects:
-            measure_split = measure_splits[obj.measure]
-            local_position = obj.position.numerator % obj.position.denominator
-            scaled_position = local_position * (measure_split //
-                                                obj.position.denominator)
+        with standard_tqdm(iterable=self.objects, desc='Injecting objects into SM chart') as progress_objects:
+            for obj in progress_objects:
+                measure_split = measure_splits[obj.measure]
+                local_position = obj.position.numerator % obj.position.denominator
+                scaled_position = local_position * (measure_split //
+                                                    obj.position.denominator)
 
-            if obj.key not in self.keys:
-                return
-            relative_position = self.keys.index(obj.key)
-            this_measure = measures[obj.measure]
+                if obj.key not in self.keys:
+                    continue
+                relative_position = self.keys.index(obj.key)
+                this_measure = measures[obj.measure]
 
-            this_measure[scaled_position][relative_position] = obj.symbol
+                this_measure[scaled_position][relative_position] = obj.symbol
 
         row_template = "{}" * len(self.keys)
         notes = "\n,\n".join(
@@ -126,12 +128,12 @@ class SMChartConverter(object):
         })
 
         result = result.encode('utf-8', errors='ignore')
-        print('Writing SM file', flush=True)
+        tqdm.write('Writing SM file')
         try:
             with open(self._parent.SM_file_path, 'wb') as f:
                 f.write(result)
         except IOError:
-            print('Error while opening SM file')
+            tqdm.write('Error while opening SM file')
             raise
 
     def make_file_setter(self, field):

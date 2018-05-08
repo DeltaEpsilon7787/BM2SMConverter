@@ -69,7 +69,7 @@ class BMChartParser(object):
 
         if not load_sounds:
             self._add_sound = null_func
-            self.define_wav = null_func
+            self._define_wav = null_func
 
         self._perform_static_reading()
         self._process_static_data()
@@ -189,6 +189,7 @@ class BMChartParser(object):
 
         elif match(channel_regex, message):
             measure, channel, data = findall(channel_regex, message)[0]
+            channel = channel.upper()
             if channel not in defined_channels:
                 return
             measure = int(measure)
@@ -292,34 +293,33 @@ class BMChartParser(object):
         current_time_sgn = ordered_time_sgn.pop(0)
         changing_displacement = True
 
-        progress_ordered_datum = standard_tqdm(iterable=ordered_datums,
-                                               desc='Displacing rows')
-        for datum in progress_ordered_datum:
-            displacement_measure, displacement_amount = current_time_sgn
+        with standard_tqdm(iterable=ordered_datums, desc='Displacing rows') as progress_ordered_datum:
+            for datum in progress_ordered_datum:
+                displacement_measure, displacement_amount = current_time_sgn
 
-            while datum.initial_measure > displacement_measure:
-                if len(ordered_time_sgn) == 0:
-                    displacement_measure, displacement_amount = 9e4000, 9e4000
-                else:
-                    current_time_sgn = ordered_time_sgn.pop(0)
-                    displacement_measure, displacement_amount = current_time_sgn
-                    current_shift += new_shift
-                    new_shift = displacement_amount - 1
+                while datum.initial_measure > displacement_measure:
+                    if len(ordered_time_sgn) == 0:
+                        displacement_measure, displacement_amount = 9e4000, 9e4000
+                    else:
+                        current_time_sgn = ordered_time_sgn.pop(0)
+                        displacement_measure, displacement_amount = current_time_sgn
+                        current_shift += new_shift
+                        new_shift = displacement_amount - 1
+                        changing_displacement = False
+
+                if datum.initial_measure < displacement_measure:
                     changing_displacement = False
+                    datum.global_position += current_shift
 
-            if datum.initial_measure < displacement_measure:
-                changing_displacement = False
-                datum.global_position += current_shift
-
-            if datum.initial_measure == displacement_measure:
-                local_position = datum.initial_position - datum.initial_measure
-                new_local_position = local_position * displacement_amount
-                displacement = new_local_position - local_position
-                datum.global_position += displacement
-                datum.global_position += current_shift
-                if not changing_displacement:
-                    new_shift = displacement_amount - 1
-                    changing_displacement = True
+                if datum.initial_measure == displacement_measure:
+                    local_position = datum.initial_position - datum.initial_measure
+                    new_local_position = local_position * displacement_amount
+                    displacement = new_local_position - local_position
+                    datum.global_position += displacement
+                    datum.global_position += current_shift
+                    if not changing_displacement:
+                        new_shift = displacement_amount - 1
+                        changing_displacement = True
 
     def _parse_implicit_subtitle(self, subtitle):
         keywords_to_difficulty = {
@@ -356,14 +356,16 @@ class BMChartParser(object):
     def copy_files(self):
         output_dir = path.dirname(self.SM_file_path)
 
-        progress_affected_files = standard_tqdm(iterable=self._affected_files,
-                                                desc="Copying files into new directory")
-        for file_path in progress_affected_files:
-            file_name = path.split(file_path)[1]
-            output_file = path.join(output_dir, file_name)
-            if path.exists(output_file):
-                return
-            copy2(file_path, output_file)
+        if len(self._affected_files) == 0:
+            return
+
+        with standard_tqdm(iterable=self._affected_files, desc="Copying files into new directory") as progress_affected_files:
+            for file_path in progress_affected_files:
+                file_name = path.split(file_path)[1]
+                output_file = path.join(output_dir, file_name)
+                if path.exists(output_file):
+                    return
+                copy2(file_path, output_file)
 
     def _perform_static_reading(self):
         try:
@@ -376,10 +378,9 @@ class BMChartParser(object):
             print('Error occurred when opening BM chart')
             raise
 
-        progress_data = standard_tqdm(iterable=data,
-                                      desc='Performing static reading')
-        for datum in progress_data:
-            self._feed_message(datum)
+        with standard_tqdm(iterable=data, desc='Performing static reading') as progress_data:
+            for datum in progress_data:
+                self._feed_message(datum)
 
     def _process_dynamic_data(self):
         self._dynamic_data = sorted(self._dynamic_data, key=lambda v: v[0])
@@ -433,12 +434,19 @@ class BMChartParser(object):
         }
 
         def do_scan(simple_deciders, message):
-            progress_dynamic_data = standard_tqdm(iterable=self._dynamic_data,
-                                                  desc=message)
-            for measure, channel, datum in progress_dynamic_data:
-                channel = channel.upper()
+            amount = 0
+            filtered = []
+            for measure, channel, datum in self._dynamic_data:
                 if channel in simple_deciders:
-                    simple_deciders[channel](datum)
+                    filtered.append((measure, channel, datum))
+                    amount += 1
+            if amount == 0:
+                return
+
+            with standard_tqdm(iterable=filtered, desc=message, total=amount) as progress_dynamic_data:
+                for measure, channel, datum in progress_dynamic_data:
+                    if channel in simple_deciders:
+                        simple_deciders[channel](datum)
 
         # All of this is used to map beats to time on the notefield
         do_scan(lengths, 'Processing time signature changes')
@@ -486,20 +494,19 @@ class BMChartParser(object):
             r'WAV([0-9a-zA-Z]{2})': self._define_wav
         }
 
-        progress_static_data = standard_tqdm(iterable=self._static_data,
-                                             desc='Processing static data')
-        for header, value in progress_static_data:
-            header = header.upper()
-            if header in simple_deciders:
-                simple_deciders[header](value)
+        with standard_tqdm(iterable=self._static_data, desc='Processing static data') as progress_static_data:
+            for header, value in progress_static_data:
+                header = header.upper()
+                if header in simple_deciders:
+                    simple_deciders[header](value)
 
-            for candidate in advanced_deciders:
-                if match(candidate, header):
-                    additional_data = findall(candidate, header)[0]
-                    if is_non_str_sequence(additional_data):
-                        advanced_deciders[candidate](value, *additional_data)
-                    else:
-                        advanced_deciders[candidate](value, additional_data)
+                for candidate in advanced_deciders:
+                    if match(candidate, header):
+                        additional_data = findall(candidate, header)[0]
+                        if is_non_str_sequence(additional_data):
+                            advanced_deciders[candidate](value, *additional_data)
+                        else:
+                            advanced_deciders[candidate](value, additional_data)
 
     def add_file_to_copy(self, file_path):
         file_path = (file_path

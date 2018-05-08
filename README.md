@@ -53,6 +53,34 @@ optional arguments:
 
 [This site](https://hitkey.nekokan.dyndns.info/cmds.htm) was used as a reference for parsing BM files.
 
+## Common errors
+
+**
+* ValueError: Usually indicates an error with one of the values in the chart, such as negative BPM or incorrect stop. May also indicate an internal error.
+
+* NotPlayer1Error: The chart is not for player 1. Such charts are planned to be supported in the future.
+
+* UnsupportedControlFlowError: The chart uses control flow gimmicks. There is no way to represent this in Stepmania. Support is not planned, but possible.
+
+* StopIsNotDefined: Somewhere in the chart there is a stop invokation that has not been defined in any #STOP.
+
+* BPMIsNotDefined: Same as StopIsNotDefined, but for #BPM.
+
+* FirstHoldHasNoStart: Will only occur if the chart uses LNOBJ for LNs and the very first LN does not have a note preceding it on this lane.
+
+* LNTypeUnsupportedError: Should never happen unless a new appropriate value of LNTYPE is defined for BM format.
+
+* UndecidableAudioFile: This audio file is either not present at all or there are multiple candidates. Planned to be ignorable in future for unsafe mode.
+
+* UnknownDifficulty: Invalid value was supplied for #DIFFICULTY.
+
+* EmptyChart: This chart has no objects.
+
+* BeatStopTooShort: May happen on gimmick charts. Due to SM only supporting 1 ms stops at best, if one of the stops in BM chart is less than that, then there is no way to represent this in SM chart. Planned to be ignorable in unsafe mode in future.
+
+* UnsupportedGameMode: Raised if there is no game mode for this amount of keys.
+**
+
 ## License
 
 This project is licensed under the GPLv3 license, refer to [LICENSE](https://github.com/DeltaEpsilon7787/BM2SMConverter/blob/master/LICENSE) for details.

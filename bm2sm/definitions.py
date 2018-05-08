@@ -1,3 +1,5 @@
+import sys
+
 from tqdm import tqdm
 
 DEFAULT_FRAME_RATE = 44100
@@ -6,6 +8,7 @@ DEFAULT_FRAME_RATE = 44100
 def standard_tqdm(*args, **kwargs):
     return tqdm(*args,
                 bar_format='{desc:>36} @ {percentage:>3.0f}% [{remaining:>5}] [{n:>6}/{total:>6}]|{bar}|',
+                file=sys.stdout,  # Not sure why tqdm outputs to stderr by default
                 **kwargs)
 
 
