@@ -101,7 +101,7 @@ class SMChartConverter(object):
                                                 obj.position.denominator)
 
             if obj.key not in self.keys:
-                return
+                continue
             relative_position = self.keys.index(obj.key)
             this_measure = measures[obj.measure]
 
