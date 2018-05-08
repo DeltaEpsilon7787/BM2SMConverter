@@ -55,7 +55,6 @@ optional arguments:
 
 ## Common errors
 
-**
 * ValueError: Usually indicates an error with one of the values in the chart, such as negative BPM or incorrect stop. May also indicate an internal error.
 
 * NotPlayer1Error: The chart is not for player 1. Such charts are planned to be supported in the future.
@@ -79,7 +78,6 @@ optional arguments:
 * BeatStopTooShort: May happen on gimmick charts. Due to SM only supporting 1 ms stops at best, if one of the stops in BM chart is less than that, then there is no way to represent this in SM chart. Planned to be ignorable in unsafe mode in future.
 
 * UnsupportedGameMode: Raised if there is no game mode for this amount of keys.
-**
 
 ## License
 
