@@ -30,14 +30,14 @@ if __name__ == '__main__':
     arg_parser.add_argument('-O', '--out_dir',
                             action='store',
                             default=None,
-                            help='Where to write converted files. Default: Same directory as specified in --in_file',
+                            help='Where to write converted files. Default: Same directory as specified in --in_file.',
                             type=str)
 
     arg_parser.add_argument('-K', '--keys',
                             action='store',
                             default='S1234567',
-                            help="How keys from BM? chart map onto SM chart. Should be a string no less than 4 and no "
-                                 "higher than 8 character. 1-7 means KEY1-KEY7, S means scratch track, X means empty "
+                            help="How the keys from BM chart map onto SM chart. Accepted string lengths: 4, 5, 6, 7, "
+                                 "8, 10 characters. 1-7 means KEY1-KEY7, S means scratch track, X means empty "
                                  "track. Only leftmost value is used, so duplicated values are treated the same as X. "
                                  "Default: S1234567",
                             type=str)
