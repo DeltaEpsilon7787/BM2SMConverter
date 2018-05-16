@@ -13,7 +13,7 @@ from os import makedirs, path
 
 from tqdm import tqdm
 
-import bm2sm.BM_parser
+import parsers.BM.BM_parser
 
 tqdm.monitor_interval = 0
 
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     if not args.out_dir:
         args.out_dir = path.split(args.in_file)[0]
 
-    parser = bm2sm.BM_parser.BMChartParser(args.in_file, args.out_dir, args.keys, args.mode != 'SM')
+    parser = parsers.BM.BM_parser.BMChartParser(args.in_file, args.out_dir, args.keys, args.mode != 'SM')
 
     if args.mode != 'AUDIO':
         parser.SM_converter.compose_chart()
