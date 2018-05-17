@@ -2,11 +2,8 @@
 # 1. Edit the 'inputs' and 'output' directory which contains the library of BMS files
 #    you want to convert and where to output.
 # 2. Run this script.
-# 3. In the same directory you placed the Python script, search for convert.bat (or whatever
-#    you set for 'output_list', and place it in the folder with SM2BMConverter.exe, then run the .bat file.
+# 3. Check the output folder.
 
-## Example:
-# BM2SMConverter.exe -I "D:/Insane BMS/2016-08-21 proposals/love_this_moment_ogg/love_this_moment_n.bme" -O "D:/BMS SM Convert/love_this_moment_ogg love_this_moment_n" -K S1234567
 
 ## NOTES:
 # This script assists in converting a very large collection of BMS files.
@@ -14,7 +11,12 @@
 # about every possible file. This script does not search through subdirectories
 # however.
 #
-# Folders are named after their parent folder (song) and filename without the extension.
+# Folders are named after their parent folder (song) and filename.
+#
+# A large BMS collection with odd key layouts like 14+2K (or other non-1P) files will
+# generate empty folders. This will not affect successful conversions.
+#
+# Finally, DO NOT CONVERT OFFICIAL KONAMI MUSIC FILES WITH THIS TOOL!
 
 import os, subprocess
 from os import listdir
@@ -36,15 +38,12 @@ def create_convert_list():
                 f = f.replace("\\", "/")
                 unique_file = os.path.basename(f) # grab file name from BMS file path
                 # generate command and add into 'output_list'
-
                 command = 'BM2SMConverter.exe -I \"' + f + '\"' + ' -O ' + '\"' + output + e + " " + unique_file + '\" -K ' + keys + ' -M ' + convert_type + ' -V'
                 print (command)
                 subprocess.run(command, shell=True)
-                #with open(output_list, 'a+', encoding="utf-8") as batch:
-                #    batch.write(command + '\n') # write each individual conversion command into a file
 
 create_convert_list() # runs the command above
                 
 
 ## Issues:
-# Cannot convert folders with parantheses. 
+# Cannot convert folders with parantheses.
