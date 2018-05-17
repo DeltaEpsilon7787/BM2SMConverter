@@ -2,6 +2,10 @@
   <dictionary name="Editor">
     <words>
       <w>discretizer</w>
+      <w>gameplay</w>
+      <w>lnobj</w>
+      <w>lntype</w>
+      <w>vsrg</w>
     </words>
   </dictionary>
 </component>

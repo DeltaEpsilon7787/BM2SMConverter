@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/rhythm_interface/note_objects.py" line="5" />
-  </component>
   <component name="ChangeListManager">
     <list default="true" id="cf9ec62c-acfa-4053-b790-433d9fc937b7" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/rhythm_interface/note_objects.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BM2SMConverter.py" beforeDir="false" afterPath="$PROJECT_DIR$/BM2SMConverter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bm2sm/BM_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/parsers/BM/BM_parser.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rhythm_interface/known_objects.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rhythm_interface/rhythm_language.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rhythm_interface/traits.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Editor.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/Editor.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rhythm_interface/note_objects.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rhythm_interface/singletons.py" beforeDir="false" />
     </list>
     <ignored path=".idea/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,32 +19,47 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="note_objects.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/rhythm_interface/note_objects.py">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="rhythm_language.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rhythm_interface/rhythm_language.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="43" selection-start-column="43" selection-end-column="43" />
+            <state relative-caret-position="320">
+              <caret line="20" column="30" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="30" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="fake_types.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/modules/fake_types.py">
+      <file leaf-file-name="traits.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rhythm_interface/traits.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1237">
+            <state relative-caret-position="491">
+              <caret line="68" lean-forward="true" selection-start-line="68" selection-end-line="68" />
               <folding>
-                <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#78#436#0" expanded="true" />
+                <element signature="e#682#741#0" expanded="true" />
+                <element signature="e#834#1215#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="singletons.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/rhythm_interface/singletons.py">
+      <file leaf-file-name="known_objects.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/rhythm_interface/known_objects.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="24" selection-start-line="24" selection-end-line="24" />
+            <state relative-caret-position="491">
+              <caret line="93" column="61" lean-forward="true" selection-start-line="93" selection-start-column="61" selection-end-line="93" selection-end-column="61" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SM_converter.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bm2sm/SM_converter.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="261">
+              <caret line="42" column="1" selection-start-line="42" selection-start-column="1" selection-end-line="52" selection-end-column="9" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -52,16 +68,12 @@
         <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="160">
-              <caret line="10" column="14" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="custom_fake_types.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bm2sm/custom_fake_types.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="80">
-              <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
+              <caret line="10" lean-forward="true" selection-end-line="67" />
+              <folding>
+                <element signature="e#72#333#0" expanded="true" />
+                <element signature="e#502#702#0" expanded="true" />
+                <element signature="e#750#1131#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -69,10 +81,12 @@
       <file leaf-file-name="BM_parser.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/parsers/BM/BM_parser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="16">
-              <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+            <state relative-caret-position="116">
+              <caret line="384" column="36" lean-forward="true" selection-start-line="384" selection-start-column="36" selection-end-line="384" selection-end-column="36" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#1105#2813#0" expanded="true" />
+                <element signature="e#15586#18525#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -87,6 +101,12 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>state</find>
+      <find>unda</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -97,9 +117,13 @@
         <option value="$PROJECT_DIR$/rhythm_interface/definitions.py" />
         <option value="$PROJECT_DIR$/rhythm_interface/enums.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
-        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+        <option value="$PROJECT_DIR$/rhythm_interface/rhythm_language.txt" />
+        <option value="$PROJECT_DIR$/rhythm_interface/aspects.py" />
         <option value="$PROJECT_DIR$/rhythm_interface/singletons.py" />
         <option value="$PROJECT_DIR$/rhythm_interface/note_objects.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+        <option value="$PROJECT_DIR$/rhythm_interface/traits.py" />
+        <option value="$PROJECT_DIR$/rhythm_interface/known_objects.py" />
       </list>
     </option>
   </component>
@@ -113,7 +137,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -160,6 +183,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -257,23 +281,23 @@
     <frame x="-4" y="-4" width="1928" height="1088" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25239617" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25171143" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" weight="0.32943678" />
-      <window_info active="true" anchor="right" x="0" y="0" width="432" height="888" id="Documentation" side_tool="true" visible="true" weight="0.32960597" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.32943678" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32943678" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="7" visible="true" weight="0.32943678" />
+      <window_info anchor="bottom" id="Python Console" order="7" weight="0.32943678" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32943678" />
-      <window_info anchor="bottom" id="Version Control" weight="0.32943678" />
-      <window_info anchor="bottom" id="Python Console" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info id="Favorites" side_tool="true" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" x="0" y="0" width="432" height="888" id="Documentation" order="3" side_tool="true" weight="0.32960597" />
       <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
     </layout>
   </component>
@@ -287,35 +311,139 @@
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/BM2SMConverter.py">
+    <entry file="file://$PROJECT_DIR$/rhythm_interface/note_objects.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="15" column="27" lean-forward="true" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
+        <state relative-caret-position="32">
+          <caret line="2" column="26" selection-start-line="2" selection-start-column="26" selection-end-line="2" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rhythm_interface/traits.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="33" column="102" lean-forward="true" selection-start-line="33" selection-start-column="102" selection-end-line="33" selection-end-column="102" />
           <folding>
-            <element signature="e#142#152#0" expanded="true" />
+            <element signature="e#78#436#0" expanded="true" />
+            <element signature="e#682#741#0" expanded="true" />
+            <element signature="e#834#1215#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bm2sm/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/modules/fake_types.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rhythm_interface/singletons.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="10" column="14" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
+          <folding>
+            <element signature="e#72#333#0" expanded="true" />
+            <element signature="e#502#702#0" expanded="true" />
+            <element signature="e#750#1131#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bm2sm/custom_fake_types.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/parsers/BM/BM_parser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#1105#2813#0" expanded="true" />
+            <element signature="e#15586#18525#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rhythm_interface/rhythm_language.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="21" column="28" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rhythm_interface/note_objects.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="43" selection-start-column="43" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modules/fake_types.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rhythm_interface/singletons.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="10" column="14" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bm2sm/custom_fake_types.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="11" column="10" selection-start-line="11" selection-start-column="10" selection-end-line="11" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/parsers/BM/BM_parser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#1105#2813#0" expanded="true" />
+            <element signature="e#15586#18525#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BM2SMConverter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="15" column="27" lean-forward="true" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/modules/decorators.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="16">
           <caret line="1" column="13" lean-forward="true" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
-          <folding>
-            <element signature="e#5059#6584#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modules/additional_functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#30#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -333,43 +461,87 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+    <entry file="file://$PROJECT_DIR$/modules/fake_types.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="10" column="14" selection-start-line="10" selection-start-column="14" selection-end-line="10" selection-end-column="14" />
+        <state>
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/rhythm_interface/singletons.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rhythm_interface/note_objects.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rhythm_interface/rhythm_language.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
+        <state relative-caret-position="320">
+          <caret line="20" column="30" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bm2sm/OGG_converter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="10" lean-forward="true" selection-end-line="67" />
+          <folding>
+            <element signature="e#72#333#0" expanded="true" />
+            <element signature="e#502#702#0" expanded="true" />
+            <element signature="e#750#1131#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bm2sm/SM_converter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="261">
+          <caret line="42" column="1" selection-start-line="42" selection-start-column="1" selection-end-line="52" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/parsers/BM/BM_parser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+        <state relative-caret-position="116">
+          <caret line="384" column="36" lean-forward="true" selection-start-line="384" selection-start-column="36" selection-end-line="384" selection-end-column="36" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#1105#2813#0" expanded="true" />
+            <element signature="e#15586#18525#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/modules/fake_types.py">
+    <entry file="file://$PROJECT_DIR$/rhythm_interface/traits.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1237">
+        <state relative-caret-position="491">
+          <caret line="68" lean-forward="true" selection-start-line="68" selection-end-line="68" />
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#78#436#0" expanded="true" />
+            <element signature="e#682#741#0" expanded="true" />
+            <element signature="e#834#1215#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rhythm_interface/note_objects.py">
+    <entry file="file://$PROJECT_DIR$/rhythm_interface/known_objects.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="43" selection-start-column="43" selection-end-column="43" />
+        <state relative-caret-position="491">
+          <caret line="93" column="61" lean-forward="true" selection-start-line="93" selection-start-column="61" selection-end-line="93" selection-end-column="61" />
         </state>
       </provider>
     </entry>

@@ -1,0 +1,40 @@
+Each VSRG shares certain gameplay elements that could be interpreted the same around all VSRG games.
+
+1. Utilize multiple inheritance to treat gameplay elements properties as traits.
+2. traits in the same category may not be combined.
+3. If reasonable, traits should be transformable to each other (physical time to beat and vice versa).
+
+Currently known gameplay elements worth caring about:
+
+    Basic class for all rhythm game objects: RhythmObject
+
+Time traits: RhythmTime
+    Timed by physical time objects: AbsoluteTime
+        Use seconds, ms etc. for position. osu! does this.
+    Timed by beat: RelativeTime
+        Use beat, measures etc. for position. StepMania, BeatMania do this.
+        Relative because the physical position is dependent on BPM and other state.
+
+Key trait: Keyed
+    This object is located on some lane.
+
+Fundamental trait: Fundamental
+    This trait indicates an object the mere presence of which changes the way the chart is parsed.
+    Examples: LNOBJ, LNTYPE in BeatMania.
+
+    This also make an object a meta entity which  must be processed separately in the parser itself.
+
+Declarative trait: Declarative
+    This object indicates that this object is not part of the gameplay but rather a message of some kind
+      that defines certain metadata of the chart.
+    Examples: Title, Subtitle, Difficulty.
+
+    It should not be confused with Fundamental aspect which is processed separately.
+    They are also immutable
+
+
+Structural trait: Structural
+    This aspect is usually defined for some kind of timing changes, such as BPM changes.
+
+    Examples: Stops, BPM changes, Time Signature Changes, Warps
+
