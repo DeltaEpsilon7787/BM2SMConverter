@@ -16,6 +16,7 @@
 #
 # Folders are named after their parent folder (song) and filename without the extension.
 
+import os, subprocess
 from os import listdir
 from os.path import isfile, isdir, join
 import glob
@@ -31,13 +32,16 @@ keys = "S1234567"
 def create_convert_list():
     for e in [x for x in listdir(inputs) if isdir(join(inputs, x))]: # iterate through each directory of your BMS collection
         for formats in file_formats:
-            for f in glob.iglob("D:/Insane BMS/2016-08-21 proposals/" + e + "/*." + formats): # iterate through a list of BMS files 
+            for f in glob.iglob(inputs + e + "/*." + formats): # iterate through a list of BMS files in each directory
                 f = f.replace("\\", "/")
-                unique_file = re.search("^.*/([^.]*)..*$", f, re.X) # grab file name from BMS file path
+                unique_file = os.path.basename(f) # grab file name from BMS file path
                 # generate command and add into 'output_list'
-                command = ('BM2SMConverter.exe -I \"' + f + '\"' + ' -O ' + '\"' + output + e + " " + unique_file.group(1) + '\" -K ' + keys + ' -M ' + convert_type + ' -V')
-                with open(output_list, 'a+', encoding="utf-8") as batch:
-                    batch.write(command + '\n') # write each individual conversion command into a file
+
+                command = 'BM2SMConverter.exe -I \"' + f + '\"' + ' -O ' + '\"' + output + e + " " + unique_file + '\" -K ' + keys + ' -M ' + convert_type + ' -V'
+                print (command)
+                subprocess.run(command, shell=True)
+                #with open(output_list, 'a+', encoding="utf-8") as batch:
+                #    batch.write(command + '\n') # write each individual conversion command into a file
 
 create_convert_list() # runs the command above
                 
