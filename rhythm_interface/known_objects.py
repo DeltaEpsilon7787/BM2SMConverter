@@ -3,7 +3,7 @@ from rhythm_interface.traits import Declarative, Keyed, RhythmTime, Structural
 
 # Notes
 class TapObject(Keyed, RhythmTime):
-    position_trait = None
+    abstract_position_trait = None
 
 
 class LNObject(Keyed, RhythmTime):
