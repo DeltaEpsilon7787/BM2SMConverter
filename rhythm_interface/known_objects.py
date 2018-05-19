@@ -36,20 +36,20 @@ class ChartDifficulty(Declarative):
     abstract_difficulty_trait = None
 
 
-class ChartBG(Declarative):
-    bg_trait = None
-
-
 class ChartBGA(Declarative):
-    background_audio = None
+    background_image_trait = None
+
+
+class ChartBGM(Declarative):
+    background_audio_trait = None
 
 
 # Timing sections
 class BPMChange(Structural):
-    start_position = None
-    bpm = None
+    start_position_trait = None
+    bpm_trait = None
 
 
 class Stop(Structural):
-    stop_position = None
-    abstract_stop_duration = None
+    stop_position_trait = None
+    abstract_stop_duration_trait = None
