@@ -1,94 +1,55 @@
-from rhythm_interface.traits import AbsoluteTime, Declarative, Keyed, RelativeTime, RhythmTime, Structural
+from rhythm_interface.traits import Declarative, Keyed, RhythmTime, Structural
 
 
 # Notes
-class NoteObject(Keyed):
-    pass
+class TapObject(Keyed, RhythmTime):
+    position_trait = None
 
 
-class TapObject(NoteObject, RhythmTime):
-    __additional_init_kwarg_allowed__ = {'tap_time'}
-    pass
-
-
-class LNObject(NoteObject, RhythmTime):
-    __additional_init_kwarg_allowed__ = {'LN_start_time', 'LN_end_time'}
-    pass
-
-
-class TapObjectAbsolute(TapObject, AbsoluteTime):
-    pass
-
-
-class TapObjectRelative(TapObject, RelativeTime):
-    pass
-
-
-class LNObjectAbsolute(LNObject, AbsoluteTime):
-    pass
-
-
-class LNObjectRelative(LNObject, RelativeTime):
-    pass
+class LNObject(Keyed, RhythmTime):
+    start_position_trait = None
+    end_position_trait = None
 
 
 # Headers
 class ChartTitle(Declarative):
-    __additional_init_kwarg_allowed__ = {'title'}
-    pass
+    title_trait = None
 
 
 class ChartArtist(Declarative):
-    __additional_init_kwarg_allowed__ = {'artist'}
-    pass
+    artist_trait = None
 
 
 class ChartSubtitle(Declarative):
-    __additional_init_kwarg_allowed__ = {'subtitle'}
-    pass
+    subtitle_trait = None
 
 
 class ChartGenre(Declarative):
-    __additional_init_kwarg_allowed__ = {'genre'}
-    pass
+    genre_trait = None
 
 
 class ChartCredit(Declarative):
-    __additional_init_kwarg_allowed__ = {'credit'}
-    pass
+    credit_trait = None
 
 
 class ChartDifficulty(Declarative):
-    __additional_init_kwarg_allowed__ = {'difficulty'}
-    pass
+    abstract_difficulty_trait = None
 
 
 class ChartBG(Declarative):
-    __additional_init_kwarg_allowed__ = {'bg'}
-    pass
+    bg_trait = None
 
 
-class ChartAudio(Declarative):
-    __additional_init_kwarg_allowed__ = {'audio'}
-    pass
+class ChartBGA(Declarative):
+    background_audio = None
 
 
 # Timing sections
 class BPMChange(Structural):
-    __additional_init_kwarg_allowed__ = {'BPM_start_time', 'BPM'}
-
-
-class BPMChangeAbsolute(BPMChange, AbsoluteTime):
-    pass
-
-
-class BPMChangeRelative(BPMChange, RelativeTime):
-    pass
+    start_position = None
+    bpm = None
 
 
 class Stop(Structural):
-    __additional_init_kwarg_allowed__ = {'stop_start_time'}
-
-
-class RelativeStop(Stop):
-    __additional_init_kwarg_allowed__ = {'relative_duration'}
+    stop_position = None
+    abstract_stop_duration = None
