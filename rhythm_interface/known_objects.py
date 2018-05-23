@@ -8,52 +8,67 @@ class RhythmObject(object, metaclass=TraitMeta):
 
 # Abstract stuff
 class RhythmRowPoint(RhythmObject):
-    abstract_row_point_position_trait = None
+    __traits__ = ['abstract_row_point_position']
+    abstract_row_point_position = None
 
 
 class RhythmColumnPoint(RhythmObject):
-    abstract_column_point_position_trait = None
+    __traits__ = ['abstract_column_point_position']
+    abstract_column_point_position = None
 
 
 class RhythmRowInterval(RhythmObject):
-    abstract_row_interval_start_position_trait = None
-    abstract_row_interval_end_position_trait = None
+    __traits__ = ['abstract_row_interval_start_position',
+                  'abstract_row_interval_end_position']
+    abstract_row_interval_start_position = None
+    abstract_row_interval_end_position = None
 
 
 class RhythmColumnInterval(RhythmObject):
-    abstract_column_interval_start_position_trait = None
-    abstract_column_interval_end_position_trait = None
+    __traits__ = ['abstract_column_interval_start_position',
+                  'abstract_column_interval_end_position']
+    abstract_column_interval_start_position = None
+    abstract_column_interval_end_position = None
 
 
 class RhythmState(RhythmObject):
-    abstract_state_key_trait = None
-    abstract_state_value_trait = None
+    __traits__ = ['abstract_state_key',
+                  'abstract_state_value']
+    abstract_state_key = None
+    abstract_state_value = None
 
 
 class RhythmCommand(RhythmObject):
-    abstract_command_trait = None
+    __traits__ = ['abstract_command']
+    abstract_command = None
 
 
 # Basic meta data stuff
 class Banner(RhythmState):
-    chart_banner_trait = None
+    __traits__ = ['chart_banner']
+    chart_banner = None
 
 
 class Title(RhythmState):
-    chart_title_trait = None
+    __traits__ = ['chart_title']
+    chart_title = None
 
 
 class Subtitle(RhythmState):
-    chart_subtitle_trait = None
+    __traits__ = ['chart_subtitle']
+    chart_subtitle = None
 
 
 class Artist(RhythmState):
-    chart_artist_trait = None
+    __traits__ = ['chart_artist']
+    chart_artist = None
 
 
 class Maker(RhythmState):
-    chart_maker_trait = None
+    __traits__ = ['chart_maker']
+    chart_maker = None
 
 
 class Genre(RhythmState):
-    chart_genre_trait = None
+    __traits__ = ['chart_genre']
+    chart_genre = None

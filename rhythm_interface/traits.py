@@ -15,12 +15,16 @@ class ImmutableTraitError(TraitError):
 class TraitMeta(type):
     """A metaclass used to implement traits.
 
-    Search for attributes ending with _trait and make them one-time set property.
-    The name of the property is the same as the trait name, but without _trait.
-    Once the value is set, it can be read, but not modified.
-    Attempting to read the attribute before setting it will raise UndefinedTraitError
-    Attempting to set the attribute after setting it will raise ImmutableTraitError
+    Search for attributes named in __traits__ and make them a trait.
+    A trait is a one-time set property.
+    Once the value of a trait is set, it can be read, but not modified.
+    For the sake of IDEs and such, it's recommended to define an empty attribute of the same name.
+    It will be displaced in favor of the trait anyway.
+    Attempting to read the trait before setting it will raise UndefinedTraitError
+    Attempting to set the trait after setting it will raise ImmutableTraitError
     """
+
+    __traits__ = []
 
     def __new__(mcs, name, bases, attributes):
         def make_trait_property(property_name):
@@ -44,9 +48,8 @@ class TraitMeta(type):
             return property(read_value, set_value)
 
         changed_attributes = attributes.copy()
-        for attr_name, attr_value in attributes.items():
-            if not attr_name.endswith('_trait'):
-                continue
-            changed_attributes[attr_name[:-6]] = make_trait_property(attr_name)
-            changed_attributes['_' + attr_name] = attr_value
+        traits = attributes.get('__trait__', [])
+        for attr_name in traits:
+            changed_attributes[attr_name] = make_trait_property(attr_name)
+            changed_attributes['_' + attr_name] = None
         return super(TraitMeta, mcs).__new__(mcs, name, bases, changed_attributes)
