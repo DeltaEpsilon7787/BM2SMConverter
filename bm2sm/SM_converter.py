@@ -45,7 +45,7 @@ class SMChartConverter(object):
             'bg': '',
             'banner': '',
             'credit': '',
-            'difficulty': 5,
+            'difficulty': 6,
             'difficulty_name': "Edit",
             'genre': '',
             'subtitle': '',
@@ -151,8 +151,10 @@ class SMChartConverter(object):
 
     @transform_args(..., CastableToInt)
     def set_difficulty(self, difficulty):
-        if difficulty not in (1, 2, 3, 4, 5):
+        diff_names = (None, "Beginner", "Easy", 'Medium', 'Hard', 'Challenge')
+        try:
+            self._meta_data['difficulty_name'] = diff_names[difficulty]
+        except IndexError:
             raise UnknownDifficulty
-        diff_names = (None, 'Beginner', 'Medium', 'Hard', 'Insane', 'Edit')
         self._meta_data['difficulty'] = difficulty
-        self._meta_data['difficulty_name'] = diff_names[difficulty]
+
