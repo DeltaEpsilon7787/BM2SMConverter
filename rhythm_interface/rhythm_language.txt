@@ -2,21 +2,33 @@ Each VSRG shares certain gameplay elements that could be interpreted the same ar
 
 Basic class for all rhythm game objects: RhythmObject
 
-Row trait: RhythmRowPosition
-    For objects for which the concept of a single row position is applicable.
-    Example: Notes, Mines
+Row traits: RhythmRowTrait
+    Row trait: RhythmRowPosition
+        For objects for which the concept of a single row position is applicable.
+        Example: Notes, Mines
 
-Column trait: RhythmColumnPosition
-    For objects for which the concept of a single column position is applicable.
-    Example: Measure Lines, BPM changes, Time Signature Changes
+    Row length trait: RhythmRowLength
+        For objects for which the concept of spanning multiple rows is applicable
+        Example: ???
 
-Row Interval trait: RhythmRowInterval
-    For objects for which the concept of spanning multiple row positions is applicable.
-    Example: ???
+Column traits: RhythmColumnTrait
+    Column position trait: RhythmColumnPosition
+        For objects for which the concept of a single column position is applicable.
+        NOT USED FOR TIMING! This is for the exact position in the chart file itself.
+        Example: Measure Lines, BPM changes, Time Signature Changes
 
-Column Interval trait: RhythmColumnInterval
-    For objects for which the concept of spanning multiple column positions is applicable.
-    Example: LNs, Warps
+    Column length trait: RhythmColumnLength
+        For objects for which the concept of spanning multiple column  is applicable.
+        Example: LNs, Warps
+
+Time trait: RhythmTimeTrait
+    Absolute time point trait: RhythmTimePosition
+        For objects for which the concept of happening at a certain time is applicable
+        Example: Hit sounds
+
+    Absolute time duration trait: RhythmTimeDuration
+        For objects for which the concept of duration is applicable.
+        Example: Absolute stops
 
 State trait: RhythmState
     For more global objects related to the chart that are STILL static.
