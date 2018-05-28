@@ -16,7 +16,8 @@ class TraitMeta(type):
     """A metaclass used to implement traits.
 
     Search for attributes named in __traits__ and make them a trait.
-    A trait is a one-time set property.
+    A trait is a one-time set property if initial value is None or not defined
+        otherwise it's a constant.
     Once the value of a trait is set, it can be read, but not modified.
     For the sake of IDEs and such, it's recommended to define an empty attribute of the same name.
     It will be displaced in favor of the trait anyway.
@@ -27,6 +28,16 @@ class TraitMeta(type):
     __traits__ = []
 
     def __new__(mcs, name, bases, attributes):
+        def constant_property(property_name):
+            def read_value(self):
+                return getattr(self, '_' + property_name)
+
+            def set_value(self, value):
+                raise ImmutableTraitError(trait_name=property_name,
+                                          source_name=name)
+
+            return property(read_value, set_value)
+
         def make_trait_property(property_name):
             has_been_set = False
 
@@ -48,8 +59,16 @@ class TraitMeta(type):
             return property(read_value, set_value)
 
         changed_attributes = attributes.copy()
-        traits = attributes.get('__trait__', [])
+        traits = attributes.get('__traits__', [])
         for attr_name in traits:
-            changed_attributes[attr_name] = make_trait_property(attr_name)
-            changed_attributes['_' + attr_name] = None
+            try:
+                if changed_attributes[attr_name] is not None:
+                    changed_attributes[attr_name] = constant_property(attr_name)
+                    changed_attributes['_' + attr_name] = changed_attributes[attr_name]
+                else:
+                    raise KeyError
+            except KeyError:
+                changed_attributes[attr_name] = make_trait_property(attr_name)
+                changed_attributes['_' + attr_name] = None
+
         return super(TraitMeta, mcs).__new__(mcs, name, bases, changed_attributes)
