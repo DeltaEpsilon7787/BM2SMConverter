@@ -1,23 +1,25 @@
+import fractions
+import glob
+import logging
 import operator
-from fractions import Fraction
-from glob import glob
-from os import path
-from re import findall, match
-from shutil import copy2
+import os
+import re
+import shutil
+from argparse import ArgumentParser
+from collections import namedtuple
+from enum import Enum
 
-from chardet import detect as char_detect
+import chardet
 
-from bm2sm.OGG_converter import OGGConverter
-from bm2sm.SM_converter import SMChartConverter
+import known_objects
 from bm2sm.custom_fake_types import BPM, Beat, MsStop, Segment
 from bm2sm.data_structures import Datum, NotefieldObject, Sound, SoundSample
 from bm2sm.definitions import Keys, Representations, standard_tqdm
 from bm2sm.exceptions import BPMIsNotDefined, FirstHoldHasNoStart, LNTypeUnsupportedError, NotPlayer1Error, \
     StopIsNotDefined, UndecidableAudioFile, UnsupportedControlFlowError
-from bm2sm.timing_manager import TimingSectionManager
 from modules import null_func
 from modules.decorators import transform_args
-from modules.fake_types import CastableToInt, PositiveInt
+from modules.fake_types import CastableToInt, PositiveInt, PositiveFraction
 from modules.functions import base_16_to_dec, is_non_str_sequence
 
 
@@ -33,28 +35,10 @@ class BMChartParser(object):
         self._LN_opened = {}
         self._LN_type = 1
 
-        self.BM_file_name = path.splitext(path.basename(in_file))[0]
-        self.BM_file_dir = path.dirname(in_file)
-        self.BM_file_path = in_file
-
-        self.OGG_converter = OGGConverter(self)
-        self.OGG_file_name = self.BM_file_name + '.ogg'
-        self.OGG_file_dir = out_dir or self.BM_file_dir
-        self.OGG_file_path = path.join(self.OGG_file_dir, self.OGG_file_name)
-
-        self.SM_converter = SMChartConverter(self, keys)
-        self.SM_file_name = self.BM_file_name + '.sm'
-        self.SM_file_dir = out_dir or self.BM_file_dir
-        self.SM_file_path = path.join(self.SM_file_dir, self.SM_file_name)
-
         self._affected_files = set()
 
         self._dynamic_data = []
         self._static_data = []
-
-        self.timing_manager = TimingSectionManager()
-
-        self._add_object = self.SM_converter.objects.append
 
         # Reference: #BPM
         #   When this command is omitted, 130 is applied as a default.
@@ -62,7 +46,7 @@ class BMChartParser(object):
         self._set_initial_bpm(130)
 
         # Some hooks
-        copying_needed = not path.samefile(self.BM_file_dir, self.SM_file_dir)
+        copying_needed = not os.path.samefile(self.BM_file_dir, self.SM_file_dir)
         if not copying_needed:
             self.add_file_to_copy = null_func
             self.copy_files = null_func
@@ -105,7 +89,7 @@ class BMChartParser(object):
         '@3': 'Invalid STP definition'
     })
     def _add_ms_stop(self, duration, measure, measure_part):
-        measure_part = Fraction(measure_part, 1000)
+        measure_part = fractions.Fraction(measure_part, 1000)
         beat = Beat(measure + measure_part)
         self.timing_manager.add_ms_stop(beat, duration)
 
@@ -147,10 +131,10 @@ class BMChartParser(object):
 
     @transform_args(..., ..., Segment)
     def _define_wav(self, value, wav_id):
-        header = path.dirname(self.BM_file_path)
-        filename = path.splitext(path.basename(value))[0]
-        file_path = path.join(header, filename)
-        candidates = glob(file_path + '.*')
+        header = os.path.dirname(self.BM_file_path)
+        filename = os.path.splitext(os.path.basename(value))[0]
+        file_path = os.path.join(header, filename)
+        candidates = glob.glob(file_path + '.*')
 
         if len(candidates) != 1:
             raise UndecidableAudioFile(value)
@@ -169,10 +153,10 @@ class BMChartParser(object):
                             '51', '52', '53', '54', '55', '56', '58', '59',
                             'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D8', 'D9')
 
-        if match(time_signature_regex, message):
-            measure, value = findall(time_signature_regex, message)[0]
+        if re.match(time_signature_regex, message):
+            measure, value = re.findall(time_signature_regex, message)[0]
             measure = int(measure)
-            value = Fraction(value)
+            value = fractions.Fraction(value)
 
             datum_with_perks = Datum('00', measure, 0, 192)
             datum_with_perks.time_signature = value
@@ -183,12 +167,12 @@ class BMChartParser(object):
                 datum_with_perks
             ))
 
-        elif match(stp_regex, message):
-            measure, measure_part, duration = findall(stp_regex, message)[0]
+        elif re.match(stp_regex, message):
+            measure, measure_part, duration = re.findall(stp_regex, message)[0]
             self._static_data.append(('STP {}.{}'.format(measure, measure_part), duration))
 
-        elif match(channel_regex, message):
-            measure, channel, data = findall(channel_regex, message)[0]
+        elif re.match(channel_regex, message):
+            measure, channel, data = re.findall(channel_regex, message)[0]
             channel = channel.upper()
             if channel not in defined_channels:
                 return
@@ -198,8 +182,8 @@ class BMChartParser(object):
             for datum in data:
                 self._dynamic_data.append((measure, channel, datum))
 
-        elif match(header_regex, message):
-            header, value = findall(header_regex, message)[0]
+        elif re.match(header_regex, message):
+            header, value = re.findall(header_regex, message)[0]
             self._static_data.append((header, value))
 
     def _make_key_adder(self, key):
@@ -354,23 +338,24 @@ class BMChartParser(object):
         self._LN_type = value
 
     def copy_files(self):
-        output_dir = path.dirname(self.SM_file_path)
+        output_dir = os.path.dirname(self.SM_file_path)
 
         if len(self._affected_files) == 0:
             return
 
-        with standard_tqdm(iterable=self._affected_files, desc="Copying files into new directory") as progress_affected_files:
+        with standard_tqdm(iterable=self._affected_files,
+                           desc="Copying files into new directory") as progress_affected_files:
             for file_path in progress_affected_files:
-                file_name = path.split(file_path)[1]
-                output_file = path.join(output_dir, file_name)
-                if path.exists(output_file):
+                file_name = os.path.split(file_path)[1]
+                output_file = os.path.join(output_dir, file_name)
+                if os.path.exists(output_file):
                     return
-                copy2(file_path, output_file)
+                shutil.copy2(file_path, output_file)
 
     def _perform_static_reading(self):
         try:
             with open(self.BM_file_path, 'rb') as in_file:
-                encoding = char_detect(in_file.read())['encoding']
+                encoding = chardet.detect(in_file.read())['encoding']
 
             with open(self.BM_file_path, 'r', encoding=encoding) as in_file:
                 data = in_file.readlines()
@@ -461,16 +446,8 @@ class BMChartParser(object):
     # noinspection SpellCheckingInspection
     def _process_static_data(self):
         simple_deciders = {
-            'PLAYER': self._assert_correct_player,
-            'TITLE': self.SM_converter.make_setter('title'),
-            'SUBTITLE': self._parse_implicit_subtitle,
-            'ARTIST': self.SM_converter.make_setter('artist'),
             'BPM': self._set_initial_bpm,
-            'DIFFICULTY': self.SM_converter.set_difficulty,
-            'LNTYPE': self._set_ln_type,
             'LNOBJ': self._add_ln_object,
-            'STAGEFILE': self.SM_converter.make_file_setter('bg'),
-            'BANNER': self.SM_converter.make_file_setter('banner'),
             'END IF': self._puke_from_gimmicks,
             'ELSE': self._puke_from_gimmicks,
             'ENDRANDOM': self._puke_from_gimmicks,
@@ -494,22 +471,171 @@ class BMChartParser(object):
             r'WAV([0-9a-zA-Z]{2})': self._define_wav
         }
 
-        with standard_tqdm(iterable=self._static_data, desc='Processing static data') as progress_static_data:
-            for header, value in progress_static_data:
-                header = header.upper()
-                if header in simple_deciders:
-                    simple_deciders[header](value)
-
-                for candidate in advanced_deciders:
-                    if match(candidate, header):
-                        additional_data = findall(candidate, header)[0]
-                        if is_non_str_sequence(additional_data):
-                            advanced_deciders[candidate](value, *additional_data)
-                        else:
-                            advanced_deciders[candidate](value, additional_data)
+        with standard_tqdm(iterable=self._static_data, desc='Processing static data') as progress_static_data
+            pass
 
     def add_file_to_copy(self, file_path):
         file_path = (file_path
-                     if path.dirname(file_path) == self.BM_file_dir
-                     else path.join(self.BM_file_dir, file_path))
+                     if os.path.dirname(file_path) == self.BM_file_dir
+                     else os.path.join(self.BM_file_dir, file_path))
         self._affected_files.add(file_path)
+
+
+class Commands(Enum):
+    LNTYPE_1 = 1
+    LNTYPE_2 = 2
+    PLAYER_1 = 3
+    PLAYER_2 = 4
+
+
+def _get_metadata(source):
+    meta = []
+    key_value_regex = r'#(\w+)\s+([^\n\r]+)'
+
+    deciders = {
+        'TITLE': known_objects.ChartTitle,
+        'ARTIST': known_objects.ChartArtist,
+        'STAGEFILE': known_objects.ChartBG,
+        'BANNER': known_objects.ChartBanner,
+        'SUBTITLE': known_objects.Subtitle,
+        'DIFFICULTY': known_objects.ChartDifficultyValue
+    }
+
+    for line in source:
+        if re.match(key_value_regex, line):
+            key, value = re.findall(key_value_regex, line)
+            key = key.upper()
+            if key in deciders:
+                meta.append(deciders[key](value))
+
+            if key == 'SUBTITLE':
+                keywords_to_difficulty = {
+                    frozenset({"EASY", "BEGINNER", "LIGHT", "SIMPLE", "[B]", "(B)"}): 1,
+                    frozenset({"NORMAL", "STANDARD", "[N]", "(N)"}): 2,
+                    frozenset({"HYPER", "HARD", "EXTEND", "[H]", "(H)"}): 3,
+                    frozenset({"MANIAC", "EXTRA", "EX"}): 4,
+                    frozenset({"INSANE", "ANOTHER", "PLUS", "[A]", "(A)"}): 5,
+                }
+
+                subtitle = value.upper()
+                for keywords, diff in keywords_to_difficulty.items():
+                    if subtitle in keywords:
+                        meta.append(known_objects.ChartDifficultyValue(diff))
+                        break
+
+    return meta
+
+
+def _get_commands(source):
+    commands = []
+
+    ln_type_regex = r'#LNTYPE\s+(.+)'
+    player_regex = r'#PLAYER\s+(.+)'
+    for line in source:
+        if re.match(ln_type_regex, line):
+            value, = re.findall(ln_type_regex, line)
+            try:
+                commands.append({
+                                    '1': Commands.LNTYPE_1,
+                                    '2': Commands.LNTYPE_2
+                                }[value])
+            except KeyError:
+                logging.error("Unsupported LNTYPE of %s", value)
+                raise
+
+        if re.match(player_regex, line):
+            value, = re.findall(player_regex, line)
+            try:
+                commands.append({
+                                    '1': Commands.PLAYER_1,
+                                    '2': Commands.PLAYER_2
+                                }[value])
+            except KeyError:
+                logging.error("Unsupported PLAYER of %s", value)
+                raise
+
+
+def _get_definitions(source):
+    bpm, stops, wav_files, ln_objs = {}, {}, {}, set()
+
+    key_value_regex = r'#(\w+)\s+([^\n\r]+)'
+    key_index_regex = r'(\w+)([0-9a-zA-Z]{2})'
+
+    for line in source:
+        if re.match(key_value_regex, line):
+            key, value = re.findall(key_value_regex, line)
+
+            if key.upper() == 'LNOBJ':
+                ln_objs.add(Segment(index))
+
+            if not re.match(key_index_regex, line):
+                continue
+
+            key, index = re.findall(key_index_regex, line)
+            key = key.upper()
+            index = Segment(index)
+
+            if key in {'BPM', 'EXBPM'}:
+                try:
+                    bpm[index] = PositiveFraction(value)
+                except ValueError:
+                    logging.error('Incorrect BPM value of %s', value)
+                    raise
+
+            if key == 'STOP':
+                try:
+                    stops[index] = PositiveInt(value)
+                except ValueError:
+                    logging.error('Incorrect beat stop duration of %s', value)
+                    raise
+
+            if key == 'WAV':
+                wav_files[index] = value
+
+
+    return namedtuple('definitions',
+        bpm=bpm,
+        stops=stops,
+        wav_files=wav_files,
+        ln_objs=ln_objs
+    )
+
+
+
+def _get_timing(source):
+    raise NotImplementedError
+
+
+def _get_objects(source):
+    raise NotImplementedError
+
+
+def main_script():
+    parser = ArgumentParser(prog='BME parser',
+                            allow_abbrev=True,
+                            add_help=True)
+
+    parser.add_argument('--input',
+                        help='BME file to parse')
+
+    args = parser.parse_args()
+
+    lines = None
+    try:
+        with open(args.input, 'r') as input_file:
+            lines = input_file.readlines()
+    except IOError:
+        logging.error("Input file %s couldn't be opened for reading", args.input)
+        exit(1)
+
+    lines = map(operator.methodcaller('strip'), lines)
+
+    metadata = _get_metadata(lines)
+    commands = _get_commands(lines)
+    definitions = _get_definitions(lines)
+    timing = _get_timing(lines)
+    get_objects = _get_objects(lines)
+
+
+if __name__ == '__main__':
+    main_script()
