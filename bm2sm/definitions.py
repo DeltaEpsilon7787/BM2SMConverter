@@ -39,7 +39,7 @@ class Keys(object):
         4: 'dance-single',
         5: 'pump-single',
         6: 'dance-solo',
-        7: 'kb7',
+        7: 'kb7-single',
         8: 'dance-double',
         10: 'pump-double'
     }
