@@ -25,6 +25,7 @@ if __name__ == '__main__':
     arg_parser.add_argument('-I', '--in_file',
                             action='store',
                             help='Path to file to be converted.',
+                            required=True,
                             type=str)
 
     arg_parser.add_argument('-O', '--out_dir',
