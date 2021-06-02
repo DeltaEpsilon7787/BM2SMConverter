@@ -1,6 +1,6 @@
 import operator
 from fractions import Fraction
-from glob import glob
+from glob import glob, escape
 from os import path
 from re import findall, match
 from shutil import copy2
@@ -149,7 +149,7 @@ class BMChartParser(object):
     def _define_wav(self, value, wav_id):
         header = path.dirname(self.BM_file_path)
         filename = path.splitext(path.basename(value))[0]
-        file_path = path.join(header, filename)
+        file_path = escape(path.join(header, filename))
         candidates = glob(file_path + '.*')
 
         if len(candidates) != 1:
