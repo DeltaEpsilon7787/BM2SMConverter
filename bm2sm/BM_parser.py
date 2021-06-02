@@ -372,8 +372,14 @@ class BMChartParser(object):
             with open(self.BM_file_path, 'rb') as in_file:
                 encoding = char_detect(in_file.read())['encoding']
 
-            with open(self.BM_file_path, 'r', encoding=encoding) as in_file:
-                data = in_file.readlines()
+            try:
+                with open(self.BM_file_path, 'r', encoding=encoding) as in_file:
+                    data = in_file.readlines()
+            except UnicodeDecodeError:
+                # Almost certainly chardet failed to detect ShiftJIS
+                with open(self.BM_file_path, 'r', encoding='shift_jis') as in_file:
+                    data = in_file.readlines()
+
         except IOError:
             print('Error occurred when opening BM chart')
             raise
